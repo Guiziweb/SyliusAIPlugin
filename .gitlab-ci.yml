@@ -1,0 +1,89 @@
+stages:
+    - test
+
+variables:
+    APP_ENV: test
+
+default:
+    image: ubuntu:latest
+
+before_script:
+    - apt-get update
+    - apt-get install -y sudo software-properties-common wget curl gnupg2
+    - add-apt-repository ppa:ondrej/php
+    - apt-get update
+
+test:
+    stage: test
+    parallel:
+        matrix:
+            - PHP_VERSION: '8.1'
+              SYMFONY_VERSION: '^5.4'
+              NODE_VERSION: '20.x'
+              MYSQL_VERSION: '8.0'
+            - PHP_VERSION: '8.2'
+              SYMFONY_VERSION: '^5.4'
+              NODE_VERSION: '20.x'
+              MYSQL_VERSION: '8.0'
+            - PHP_VERSION: '8.3'
+              SYMFONY_VERSION: '^5.4'
+              NODE_VERSION: '20.x'
+              MYSQL_VERSION: '8.0'
+            - PHP_VERSION: '8.1'
+              SYMFONY_VERSION: '^6.4'
+              NODE_VERSION: '20.x'
+              MYSQL_VERSION: '8.0'
+            - PHP_VERSION: '8.2'
+              SYMFONY_VERSION: '^6.4'
+              NODE_VERSION: '20.x'
+              MYSQL_VERSION: '8.0'
+            - PHP_VERSION: '8.3'
+              SYMFONY_VERSION: '^6.4'
+              NODE_VERSION: '20.x'
+              MYSQL_VERSION: '8.0'
+    
+    script:
+        - apt-get install -y php${PHP_VERSION} php${PHP_VERSION}-intl php${PHP_VERSION}-mysql
+        - curl -sL https://deb.nodesource.com/setup_${NODE_VERSION} | bash -
+        - apt-get install -y nodejs
+        - service mysql stop
+        - docker run --name mysql-${CI_JOB_ID} -e MYSQL_ROOT_PASSWORD=root -d mysql:${MYSQL_VERSION}
+        - docker exec mysql-${CI_JOB_ID} bash -c "echo 'CREATE DATABASE sylius;' | mysql -u root -proot"
+        - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+        - php -r "copy('https://get.symfony.com/cli/installer', 'symfony-installer');"
+        - php symfony-installer
+        - mv /root/.symfony*/bin/symfony /usr/local/bin/symfony
+        - echo $PHP_VERSION > .php-version
+        - symfony server:ca:install
+        - google-chrome-stable --enable-automation --disable-background-networking --no-default-browser-check --no-first-run --disable-popup-blocking --disable-default-apps --allow-insecure-localhost --disable-translate --disable-extensions --no-sandbox --enable-features=Metal --headless --remote-debugging-port=9222 --window-size=2880,1800 --proxy-server='direct://' --proxy-bypass-list='*' http://127.0.0.1 > /dev/null 2>&1 &
+        - cd tests/Application && symfony server:start --port=8080 --dir=public --daemon
+        - composer config --global allow-plugins.symfony/flex true
+        - composer global require symfony/flex:^2.2.2
+        - composer config extra.symfony.require "${SYMFONY_VERSION}"
+        - composer require "sylius/sylius:${SYLIUS_VERSION}" --no-update --no-scripts --no-interaction
+        - composer install --no-interaction
+        - yarn install
+        - (cd tests/Application && bin/console doctrine:database:create -vvv)
+        - (cd tests/Application && bin/console doctrine:schema:create -vvv)
+        - (cd tests/Application && bin/console assets:install public -vvv)
+        - (cd tests/Application && yarn build:prod)
+        - (cd tests/Application && bin/console cache:warmup -vvv)
+        - (cd tests/Application && bin/console sylius:fixtures:load -n)
+        - composer validate --ansi --strict
+        - (cd tests/Application && bin/console doctrine:schema:validate)
+        - vendor/bin/phpstan analyse -c phpstan.neon -l max src/
+        - vendor/bin/phpspec run --ansi -f progress --no-interaction
+        - vendor/bin/phpunit --colors=always
+        - vendor/bin/behat --colors --strict -vvv --no-interaction -f progress || vendor/bin/behat --colors --strict -vvv --no-interaction -f progress --rerun
+    
+    after_script:
+        - docker stop mysql-${CI_JOB_ID}
+        - docker rm mysql-${CI_JOB_ID}
+
+cache:
+    paths:
+        - vendor/
+        - ~/.composer/cache
+        - tests/Application/node_modules/
+        - tests/Application/public/build/
+        - tests/Application/var/cache/
