@@ -4,8 +4,6 @@ parameters:
     checkMissingIterableValueType: false
     paths:
         - src
-        - tests/Behat
-
     excludes_analyse:
         # Makes PHPStan crash
         - 'src/DependencyInjection/Configuration.php'
