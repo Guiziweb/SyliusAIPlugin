@@ -1,7 +1,7 @@
 {
-    "name": "sylius/plugin-skeleton",
+    "name": "acseo/gemini-seo-plugin",
     "type": "sylius-plugin",
-    "description": "Acme example plugin for Sylius.",
+    "description": "Gemini plugin for Sylius.",
     "keywords": [
         "sylius",
         "sylius-plugin"
@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
+        "google-gemini-php/client": "^1.0",
         "sylius/sylius": "~1.13.0",
         "symfony/webpack-encore-bundle": "^1.15"
     },
@@ -39,7 +40,8 @@
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": false,
             "phpstan/extension-installer": true,
-            "symfony/flex": true
+            "symfony/flex": true,
+            "php-http/discovery": false
         }
     },
     "extra": {
@@ -52,8 +54,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Acme\\SyliusExamplePlugin\\": "src/",
-            "Tests\\Acme\\SyliusExamplePlugin\\": "tests/"
+            "Acseo\\GeminiSeoPlugin\\": "src/",
+            "Tests\\Acseo\\GeminiSeoPlugin\\": "tests/"
         }
     },
     "autoload-dev": {

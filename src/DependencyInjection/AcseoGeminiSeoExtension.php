@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Acme\SyliusExamplePlugin\DependencyInjection;
+namespace Acseo\GeminiSeoPlugin\DependencyInjection;
 
 use Sylius\Bundle\CoreBundle\DependencyInjection\PrependDoctrineMigrationsTrait;
 use Sylius\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractResourceExtension;
@@ -11,14 +11,14 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader;
 
-final class AcmeSyliusExampleExtension extends AbstractResourceExtension implements PrependExtensionInterface
+final class AcseoGeminiSeoExtension extends AbstractResourceExtension implements PrependExtensionInterface
 {
     use PrependDoctrineMigrationsTrait;
 
     /** @psalm-suppress UnusedVariable */
     public function load(array $configs, ContainerBuilder $container): void
     {
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../../config'));
 
         $loader->load('services.yml');
     }
@@ -35,7 +35,7 @@ final class AcmeSyliusExampleExtension extends AbstractResourceExtension impleme
 
     protected function getMigrationsDirectory(): string
     {
-        return '@AcmeSyliusExamplePlugin/migrations';
+        return '@AcseoGeminiSeoPlugin/migrations';
     }
 
     protected function getNamespacesOfMigrationsExecutedBefore(): array

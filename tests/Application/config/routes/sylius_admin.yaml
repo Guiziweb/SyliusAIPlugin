@@ -1,3 +1,6 @@
 sylius_admin:
     resource: "@SyliusAdminBundle/Resources/config/routing.yml"
     prefix: /admin
+
+acseo_sylius_gemini_seo_plugin:
+    resource: "@AcseoGeminiSeoPlugin/config/routes/admin.yml"

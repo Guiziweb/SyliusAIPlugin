@@ -1,0 +1,4 @@
+acseo_gemini_seo_plugin_ajax_get_meta_keywords:
+  path: admin/ajax/resource/{id}/get-ai-meta-keywords
+  controller: Acseo\GeminiSeoPlugin\Controller\GeminiController::ajaxAction
+  methods: [POST]
