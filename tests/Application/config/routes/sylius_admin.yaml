@@ -1,6 +1,0 @@
-sylius_admin:
-    resource: "@SyliusAdminBundle/Resources/config/routing.yml"
-    prefix: /admin
-
-guiziweb_sylius_gemini_seo_plugin:
-    resource: "@GuiziwebGeminiSeoPlugin/config/admin_routing.yml"

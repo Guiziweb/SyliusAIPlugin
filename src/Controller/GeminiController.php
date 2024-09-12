@@ -7,6 +7,7 @@ namespace Guiziweb\GeminiSeoPlugin\Controller;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\EntityRepository;
 use Guiziweb\GeminiSeoPlugin\Service\Prompt;
+use Guiziweb\GeminiSeoPlugin\Repository\PromptRepository;
 use Sylius\Component\Product\Model\ProductTranslation;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +18,7 @@ final class GeminiController
     public function __construct(
         private Prompt $prompt,
         private EntityRepository $productTranslationRepository,
-        private EntityRepository $promptRepository
+        private PromptRepository $promptRepository
     ) {
     }
 

@@ -3,7 +3,7 @@ sylius_resource:
     guiziweb_gemini.prompt:
       classes:
         model: Guiziweb\GeminiSeoPlugin\Entity\Prompt
-        repository: Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository
+        repository: Guiziweb\GeminiSeoPlugin\Repository\PromptRepository
         form: Guiziweb\GeminiSeoPlugin\Form\Type\PromptType
 
 sylius_grid:

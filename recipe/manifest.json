@@ -1,0 +1,10 @@
+{
+  "manifest": {
+    "bundles": {
+      "Guiziweb\\GeminiSeoPlugin\\GuiziwebGeminiSeoPlugin": ["all"]
+    },
+    "copy-from-package": {
+      "recipe/config/": "%CONFIG_DIR%/"
+    }
+  }
+}

@@ -7,6 +7,9 @@ services:
     Guiziweb\GeminiSeoPlugin\Service\Prompt:
         autowire: true
 
+    Guiziweb\GeminiSeoPlugin\Repository\PromptRepository:
+        autowire: true
+
     Guiziweb\GeminiSeoPlugin\Controller\GeminiController:
         autowire: true
         tags: ['controller.service_arguments']

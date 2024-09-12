@@ -1,0 +1,15 @@
+guiziweb_gemini_seo_plugin_admin_ajax_ai_response:
+  path: admin/ajax/resource/get-ai-response
+  controller: Guiziweb\GeminiSeoPlugin\Controller\GeminiController::getAiResponse
+  methods: [POST]
+
+guiziweb_gemini_prompt_admin:
+  resource: |
+    alias: guiziweb_gemini.prompt
+    section: admin
+    templates: "@SyliusAdmin\\Crud"
+    grid: guiziweb_gemini_prompt
+    redirect: index
+    permission: true
+  type: sylius.resource
+  prefix: /admin

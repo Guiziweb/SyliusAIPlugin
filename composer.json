@@ -1,5 +1,6 @@
 {
     "name": "guiziweb/gemini-seo-plugin",
+    "version": "1.0.0",
     "type": "sylius-plugin",
     "description": "Gemini plugin for Sylius.",
     "keywords": [
@@ -49,35 +50,20 @@
             "dev-master": "1.13-dev"
         },
         "symfony": {
-            "recipes": {
-                "guiziweb/gemini-seo-plugin": "v1.0"
+            "recipe": {
+                "path": "recipe",
+                "repo": "private"
             },
             "require": "^5.4 || ^6.4"
         }
     },
     "autoload": {
         "psr-4": {
-            "Guiziweb\\GeminiSeoPlugin\\": "src/",
-            "Tests\\Guiziweb\\GeminiSeoPlugin\\": "tests/"
+            "Guiziweb\\GeminiSeoPlugin\\": "src/"
         }
     },
-    "autoload-dev": {
-        "classmap": [
-            "tests/Application/Kernel.php"
-        ]
-    },
     "scripts": {
-        "post-install-cmd": [
-            "php bin/create_node_symlink.php"
-        ],
-        "post-update-cmd": [
-            "php bin/create_node_symlink.php"
-        ],
-        "post-create-project-cmd": [
-            "php bin/create_node_symlink.php"
-        ],
         "auto-scripts": {
-            "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd",
             "security-checker security:check": "script"
         }
