@@ -1,7 +1,0 @@
-services:
-  Acseo\GeminiSeoPlugin\Service\GeminiHelper:
-    autowire: true
-
-  Acseo\GeminiSeoPlugin\Controller\GeminiController:
-    autowire: true
-    tags: ['controller.service_arguments']

@@ -1,5 +1,5 @@
 {
-    "name": "acseo/gemini-seo-plugin",
+    "name": "guiziweb/gemini-seo-plugin",
     "type": "sylius-plugin",
     "description": "Gemini plugin for Sylius.",
     "keywords": [
@@ -9,7 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "google-gemini-php/client": "^1.0",
+        "google-gemini-php/symfony": "^1.0",
         "sylius/sylius": "~1.13.0",
         "symfony/webpack-encore-bundle": "^1.15"
     },
@@ -49,13 +49,16 @@
             "dev-master": "1.13-dev"
         },
         "symfony": {
+            "recipes": {
+                "guiziweb/gemini-seo-plugin": "v1.0"
+            },
             "require": "^5.4 || ^6.4"
         }
     },
     "autoload": {
         "psr-4": {
-            "Acseo\\GeminiSeoPlugin\\": "src/",
-            "Tests\\Acseo\\GeminiSeoPlugin\\": "tests/"
+            "Guiziweb\\GeminiSeoPlugin\\": "src/",
+            "Tests\\Guiziweb\\GeminiSeoPlugin\\": "tests/"
         }
     },
     "autoload-dev": {

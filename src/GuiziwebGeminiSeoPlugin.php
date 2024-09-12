@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Acseo\GeminiSeoPlugin;
+namespace Guiziweb\GeminiSeoPlugin;
 
 use Sylius\Bundle\CoreBundle\Application\SyliusPluginTrait;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-final class AcseoGeminiSeoPlugin extends Bundle
+final class GuiziwebGeminiSeoPlugin extends Bundle
 {
     use SyliusPluginTrait;
 

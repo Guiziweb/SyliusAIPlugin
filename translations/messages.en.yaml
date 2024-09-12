@@ -1,0 +1,4 @@
+guiziweb_gemini:
+  ui:
+    edit_prompt: Edit Prompt
+    prompts: Prompts

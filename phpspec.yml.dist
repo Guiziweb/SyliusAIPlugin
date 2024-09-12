@@ -1,4 +1,0 @@
-suites:
-    main:
-        namespace: Acseo\GeminiSeoPlugin
-        psr4_prefix: Acseo\GeminiSeoPlugin

@@ -7,17 +7,17 @@ phpspec:
 phpstan:
 	vendor/bin/phpstan analyse
 
-install:
-	composer install --no-interaction --no-scripts
-
 backend:
+	composer install
 	tests/Application/bin/console sylius:install --no-interaction
 	tests/Application/bin/console sylius:fixtures:load default --no-interaction
+
+drop-db:
+	tests/Application/bin/console d:d:d --force
 
 frontend:
 	(cd tests/Application && yarn install --pure-lockfile)
 	(cd tests/Application && GULP_ENV=prod yarn build)
-
 
 init: install backend frontend
 

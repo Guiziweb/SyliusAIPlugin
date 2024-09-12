@@ -1,13 +1,13 @@
 <?php
 
-
 declare(strict_types=1);
 
-namespace Acseo\GeminiSeoPlugin\Controller;
+namespace Guiziweb\GeminiSeoPlugin\Controller;
 
-use Acseo\GeminiSeoPlugin\Service\GeminiHelper;
-use Sylius\Bundle\CoreBundle\Doctrine\ORM\ProductRepository;
-use Sylius\Component\Core\Model\Product;
+use Doctrine\ORM\EntityNotFoundException;
+use Doctrine\ORM\EntityRepository;
+use Guiziweb\GeminiSeoPlugin\Service\Prompt;
+use Sylius\Component\Product\Model\ProductTranslation;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,31 +15,81 @@ use Symfony\Component\HttpFoundation\Response;
 final class GeminiController
 {
     public function __construct(
-        private GeminiHelper $gemini,
-        private ProductRepository $productRepository,
+        private Prompt $prompt,
+        private EntityRepository $productTranslationRepository,
+        private EntityRepository $promptRepository
     ) {
     }
 
-    public function ajaxAction(Request $request): Response
+    public function getAiResponse(Request $request): JsonResponse
     {
         $resourceId = $request->request->get('id');
-        $product = $this->productRepository->find($resourceId);
+        $resourceField = $request->request->get('field');
+        $productTranslation = $this->productTranslationRepository->find($resourceId);
 
-        if (!$product instanceof Product) {
-            return $this->createErrorResponse('Produit non trouvé.', Response::HTTP_NOT_FOUND);
+        if (!$productTranslation instanceof ProductTranslation) {
+            return $this->createErrorResponse('Product translation not found.');
         }
 
         try {
-            $data = $this->gemini->generateKeywords($product->getName(), $product->getDescription(), 'fr');
-            return new JsonResponse(['data' => $data]);
-        } catch (\Exception $e) {
+            $description = $productTranslation->getDescription() ?? '';
+            $locale = $productTranslation->getLocale() ?? '';
 
-            return $this->createErrorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+            return new JsonResponse([
+                'data' => $this->generateAiResponseFromDescription($resourceField, $description, $locale),
+            ]);
+        } catch (\Exception $e) {
+            return $this->createErrorResponse($e->getMessage());
         }
     }
 
-    private function createErrorResponse(string $message, int $status): JsonResponse
+    private function generateAiResponseFromDescription(string $resourceField, string $description, string $locale): string
     {
-        return new JsonResponse(['error' => $message], $status);
+        $validFields = [
+            Prompt::META_KEYWORDS,
+            Prompt::SHORT_DESCRIPTION,
+            Prompt::META_DESCRIPTION,
+        ];
+
+        if (!in_array($resourceField, $validFields, true)) {
+            throw new \InvalidArgumentException("Invalid resource field: {$resourceField}");
+        }
+
+        $prompt = $this->promptRepository->findOneBy(['code' => $resourceField]);
+
+        if (!$prompt) {
+            throw new EntityNotFoundException("Prompt not found for code: {$resourceField}");
+        }
+
+        $text = str_replace(
+            ['{description}', '{locale}'],
+            [$description, $locale],
+            $prompt->getText()
+        );
+
+        $structure = json_decode($prompt->getStructure(), true);
+        if (!is_array($structure)) {
+            throw new \InvalidArgumentException('Invalid structure format.');
+        }
+
+        $data = $this->prompt->generate($structure, $text);
+
+        $data = json_decode($data, true, 512, \JSON_THROW_ON_ERROR);
+
+        if ($resourceField === Prompt::META_KEYWORDS) {
+
+            if (!is_array($data)) {
+                throw new \InvalidArgumentException('Invalid keywords format.');
+            }
+
+            return implode(', ', $data);
+        }
+
+        return $data;
+    }
+
+    private function createErrorResponse(string $message): JsonResponse
+    {
+        return new JsonResponse(['error' => $message], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 }

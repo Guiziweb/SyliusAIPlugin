@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Tests\Acseo\GeminiSeoPlugin\Application\Kernel;
+use Tests\Guiziweb\GeminiSeoPlugin\Application\Kernel;
 use Symfony\Component\ErrorHandler\Debug;
 use Symfony\Component\HttpFoundation\Request;
 

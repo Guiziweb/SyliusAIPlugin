@@ -1,0 +1,21 @@
+Guiziweb\GeminiSeoPlugin\Entity\Prompt:
+  type: entity
+  table: guiziweb_prompt
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+  fields:
+    code:
+      type: string
+      length: 255
+      nullable: false
+    text:
+      type: string
+      length: 255
+      nullable: false
+    structure:
+      type: string
+      length: 255
+      nullable: false
