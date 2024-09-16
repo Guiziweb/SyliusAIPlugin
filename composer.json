@@ -1,6 +1,5 @@
 {
     "name": "guiziweb/gemini-seo-plugin",
-    "version": "1.0.0",
     "type": "sylius-plugin",
     "description": "Gemini plugin for Sylius.",
     "keywords": [
