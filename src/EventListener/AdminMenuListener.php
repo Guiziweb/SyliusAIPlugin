@@ -17,7 +17,7 @@ class AdminMenuListener
 
         if ($child instanceof ItemInterface) {
             $child->addChild('gemini', [
-                    'route' => 'guiziweb_gemini_seo_plugin_admin_index',
+                    'route' => 'guiziweb_gemini_admin_prompt_index',
             ])
                 ->setLabel('Gemini')
                 ->setLabelAttribute('icon', 'star');

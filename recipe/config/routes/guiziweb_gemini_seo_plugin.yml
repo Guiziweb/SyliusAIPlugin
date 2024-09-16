@@ -1,9 +1,9 @@
-guiziweb_gemini_seo_plugin_admin_ajax_ai_response:
+guiziweb_gemini_admin_ajax_ai_response:
   path: admin/ajax/resource/get-ai-response
   controller: Guiziweb\GeminiSeoPlugin\Controller\GeminiController::getAiResponse
   methods: [POST]
 
-guiziweb_gemini_seo_plugin_admin:
+guiziweb_gemini_admin_prompt:
   resource: |
     alias: guiziweb_gemini.prompt
     section: admin

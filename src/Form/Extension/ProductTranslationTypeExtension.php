@@ -57,7 +57,7 @@ final class ProductTranslationTypeExtension extends AbstractTypeExtension
                         $field,
                         $field,
                         $productTranslation->getId(),
-                        $this->router->generate('guiziweb_gemini_seo_plugin_admin_ajax_ai_response'),
+                        $this->router->generate('guiziweb_gemini_admin_ajax_ai_response'),
                         $field,
                     ),
                     'label_html' => true,
