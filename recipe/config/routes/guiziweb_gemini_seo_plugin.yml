@@ -3,7 +3,7 @@ guiziweb_gemini_seo_plugin_admin_ajax_ai_response:
   controller: Guiziweb\GeminiSeoPlugin\Controller\GeminiController::getAiResponse
   methods: [POST]
 
-guiziweb_gemini_prompt_admin:
+guiziweb_gemini_seo_plugin_admin:
   resource: |
     alias: guiziweb_gemini.prompt
     section: admin
