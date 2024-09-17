@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Guiziweb\GeminiSeoPlugin\Service;
 
-use Gemini\Client;
 use Gemini\Data\GenerationConfig;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class Prompt
 {
@@ -15,11 +15,11 @@ class Prompt
 
     public const SHORT_DESCRIPTION = 'shortDescription';
 
-    private Client $gemini;
+    private string $apiKey;
 
-    public function __construct(Client $gemini)
+    public function __construct(string $apiKey)
     {
-        $this->gemini = $gemini;
+        $this->apiKey = $apiKey;
     }
 
     public function generate(array $stucture, string $prompt): string
@@ -35,10 +35,13 @@ class Prompt
             $stucture,
         );
 
-        return $this->gemini
-         ->generativeModel('models/gemini-1.5-pro')
-         ->withGenerationConfig($generationConfig)
-         ->generateContent($prompt)
-         ->text();
+        $client = \Gemini::client($this->apiKey);
+
+
+        return $client
+            ->generativeModel('models/gemini-1.5-pro')
+            ->withGenerationConfig($generationConfig)
+            ->generateContent($prompt)
+            ->text();
     }
 }
